@@ -1,4 +1,4 @@
-# Código fuente Bloque VIII - 1: Estructuras repetitivas (Bucles) #
+# Código fuente Bloque VIII - Estructuras repetitivas (Bucles) #
 
 **El bucle for**
 ```powershell

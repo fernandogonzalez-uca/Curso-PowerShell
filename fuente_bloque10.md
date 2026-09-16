@@ -1,4 +1,4 @@
-# Código fuente Bloque X - 1: Funciones #
+# Código fuente Bloque X - Funciones #
 
 **1 - ¿Qué es una función?**
 ```powershell

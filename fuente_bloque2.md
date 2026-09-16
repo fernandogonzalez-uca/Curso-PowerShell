@@ -1,4 +1,4 @@
-# Código fuente Bloque II - 1: Entorno y primeros pasos
+# Código fuente Bloque II - Entorno y primeros pasos
 
 **Ejecutando los distintos ejecutables de PowerShell con permisos de Administrador desde una consola de MS-DOS**
 
@@ -52,12 +52,29 @@ Get-Command -CommandType cmdlet | Measure-Object
 Get-Help -Name Nombre_Cmdlet
 Get-Help -Name Get-Command
 Get-Help Get-Command
+# Muestra la información online, en la página de learn de Microsoft.
 Get-Help Get-Command -Online
+
+
 Get-Help Get-Command -Detailed
+# La muestra también online, ¿porqué?
+
 Get-Help  
 ```
 
 Podremos obtener una referencia respecto a que no está descargada la ayuda respecto al comando en PowerShell, será necesario ejecutar el comando Update-Help o responder afirmativamente a la opción de descarga
+
+```powershell
+Update-Help -UICulture es-ES -Force
+# Obtendremos bastante errorres ya que muchos paquetes no están traducidos y por tanto
+# no los descargará.
+
+Update-Help -UICUlture en-US -Force
+# Descargaremos casi la totalidad de paquetes.
+
+Get-Help Get-Command -Detailed # mostrará la ayuda en consola.
+```
+
 
 **Comandos simples y ejemplos de alias**
 
@@ -72,6 +89,8 @@ gci
 ```powershell
 clear
 pwd
+md C:\datos
+cd C:\datos
 md prueba
 cd prueba
 ni test.txt
@@ -93,6 +112,17 @@ Get-Alias -Definition Get-Content
 Get-Alias -Definition Get-History
 ``` 
 
+**Se obtiene un error en la consulta cuando no existe un alias asociado**
+
+```powershell
+Get-Alias -Definition Get-LocalUser
+#Obtendremos un error y es normal, ya que no se encuentra ninguna asociación.
+```
+```powershell
+Get-Alias -Definition Get-LocalUser -ErrorAction SilentlyContinue
+```
+
+
 **Conocer que comandos existen relacionados con los alias**
 ```powershell
 Get-Command "*alias*"
@@ -106,10 +136,11 @@ New-Alias -Name grupos Get-LocalGroup
 
 **Exportación e importación de alias**
 ```powershell
-Export-Alias -Name usuarios,grupos -Path C:\Users\fernando\prueba\mis_alias.txt
-cat C:\Users\fernando\prueba\mis_alias.txt
+md C:\Datos\prueba
+Export-Alias -Name usuarios,grupos -Path C:\Datos\prueba\mis_alias.txt
+cat C:\Datos\prueba\mis_alias.txt
 
-Import-Alias -Path C:\Users\fernando\prueba\mis_alias.txt
+Import-Alias -Path C:\Datos\prueba\mis_alias.txt
 Get-Alias
 ```
 

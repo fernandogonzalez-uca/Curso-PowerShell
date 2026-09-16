@@ -1,4 +1,4 @@
-# Código fuente Bloque VII - 1: Estructuras de control de flujo #
+# Código fuente Bloque VII - Estructuras de control de flujo #
 
 **If simple**
 ```powershell
@@ -215,4 +215,17 @@ $puerto = $configuracion.Puerto ?? 443
 
 $configuracion.Puerto ??= 443
 # Asigna 443 a Puerto SOLO SI actualmente es $null; si ya tiene un valor, no lo toca
+```
+
+**Ejemplo integrador aplicado a Sistemas**
+```powershell
+$servicios = Get-Service -Name 'Spooler', 'BITS', 'WinRM'
+
+foreach ($servicio in $servicios) {
+    switch -Wildcard ($servicio.Status) {
+        'Running' { Write-Host "$($servicio.Name): funcionando correctamente" }
+        'Stop*'   { Write-Host "$($servicio.Name): DETENIDO, revisar" }
+        default   { Write-Host "$($servicio.Name): estado $($servicio.Status)" }
+    }
+}
 ```

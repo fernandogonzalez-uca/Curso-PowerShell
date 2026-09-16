@@ -1,4 +1,49 @@
-# Código fuente Bloque VI - 1: Tipos de datos y operadores
+# Código fuente Bloque VI - Tipos de datos y operadores
+
+**Cómo obtener el tipo de una variable**
+
+```powershell
+$nombre = Read-Host "¿Cuál es tu nombre?"
+Write-Host "El tipo de la variables $nombre es: $nombre.GetType.Name"
+```
+
+**Definición implícita de variables**
+
+```powershell
+$nombre = "Javier"
+Write-Host $nombre.GetType().Name
+# A la variable $nombre se le asigna el tipo string.
+
+$precio = 5.99
+Write-Host $precio.GetType().Name
+# A la variable $precio se le asigna el tipo double.
+
+$precio = "tomate"
+Write-Host $precio.GetType().Name
+# Ahora $precio es de tipo string.
+# Como a la variable $precio no le hemos especificado de que tipo será, se adapta al valor
+# asignado, es dinámica y por tanto puede cambiar de tipo.
+```
+
+**Ejemplos de definiciones explícitas de variables**
+
+```powershell
+$temperatura = 37.50
+# En modo implícito $temperatura será una variable double(64 bits)
+
+[float] $temperatura = 37.50
+# En modo explícito será una variable float (32 bits). Más apropiada por su tamaño.
+```
+
+**Ejemplo de cambio del valor de una constante**
+
+```powershell
+New-Variable -Name $nombre -Value "Luisa" -Option ReadOnly
+$nombre = "Pepe"
+
+#Esto producirá un error.
+```
+
 
 **Ejemplo de strings multilíneas -here-strings-
 ```powershell
@@ -33,11 +78,13 @@ $mi_cadena = @('a','b','c') -join '-'
 $mi_cadena.GetType().Name
 ```
 
+
 **Truncamiento en división entre enteros**
 ```powershell
 10 / 3          # 3.33333333333333  (double, NO se trunca como en C o Java)
 [int](10 / 3)   # 3  (al forzar el tipo [int], se trunca la parte decimal)
 ```
+
 
 **Ejemplo de booleanos**
 ```powershell
@@ -55,6 +102,7 @@ if ("") {
 }
 # La cadena está vacía, así que se evalúa como false
 ```
+
 
 ** Variables fecha y hora (DateTime)**
 
@@ -87,11 +135,13 @@ $equipos[-1]       # 'PC-Aula03'  (último elemento, índice negativo)
 $equipos[0..1]     # 'PC-Aula01', 'PC-Aula02'  (un rango de elementos)
 $equipos.Count     # 3  (número de elementos)
 ```
+
 **Añadir y quitar elementos**
 ```powershell
 $equipos += 'PC-Aula04'                      # Añadir un elemento
 $equipos = $equipos | Where-Object { $_ -ne 'PC-Aula02' }   # "Quitar" un elemento
 ```
+
 
 **Recorrer un array**
 ```powershell
@@ -114,6 +164,8 @@ $equipo = @{
     Estado  = 'Activo'
 }
 ```
+
+
 **Acceder y modificar valores**
 ```powershell
 $equipo.Nombre           # 'PC-Aula01'   (notación con punto)
@@ -137,6 +189,102 @@ foreach ($clave in $equipo.Keys) {
 $equipo.Keys da acceso a todos los nombres de clave, y $equipo.Values a todos los valores, sin emparejar.
 Para recorrer ambos a la vez (clave y valor juntos) el patrón foreach ($clave in $equipo.Keys) de arriba es el más habitual y claro para quien empieza.
 #>
+```
+
+
+**Hashtables ordenadas**
+```powershell
+$equipoOrdenado = [ordered]@{
+    Nombre = 'PC-Aula01'
+    IP     = '10.10.5.20'
+    Estado = 'Activo'
+}
+# Nos aseguramos de mantener las claves exactamente en este orden.
+# Si no se especifican por defecto son modificadas en su creación.
+```
+
+**Leer valores -acceso a los datos-**
+```powershell
+# Obtener la IP usando el punto
+$laIP = $equipoOrdenado.IP
+
+# Obtener el Estado usando corchetes (útil si la clave está en otra variable)
+$elEstado = $equipoOrdenado['Estado']
+```
+
+**Añadir nuevas propiedades (Clave-Valor)**
+```powershell
+# Si queremos agregar más características al equipo, como el sistema operativo o la memoria RAM.
+# Método 1: Notación de punto directa
+$equipoOrdenado.SO = 'Windows 11'
+
+# Método 2: Usando el método .Add()
+$equipoOrdenado.Add('RAM', '16GB')
+```
+
+**Modificar un valor existente**
+```powershell
+# Si el equipo cambia de dirección de red o se apaga puedes actualizar su valor como sigue.
+
+$equipoOrdenado.IP = '10.10.5.25'
+$equipoOrdenado.Estado = 'Inactivo'
+```
+
+
+**Eliminar una propiedad**
+```powershell
+# Si ya no necesitas hacer el seguimiento de una clave en concreto, utiliza el método. Remove():
+$equipoOrdenado.Remove('Estado')
+```
+
+**Comprobar si existe una clave o un valor**
+```powershell
+# Comprobar si existe la clave 'MacAddress'
+if ($equipoOrdenado.Contains('MacAddress')) { "Ya tiene MAC" }
+
+# Comprobar si la IP '10.10.5.20' está asignada a alguna de las propiedades
+if ($equipoOrdenado.ContainsValue('10.10.5.20')) { "Esa IP está registrada" }
+```
+
+**Recorrer la hashtable**
+```powershell
+# Recorrer la Hashtable (Bucles)Para iterar por todos los elementos de la tabla hash de
+# forma ordenada, se suele recorrer su colección de claves (.Keys):
+foreach ($propiedad in $equipoOrdenado.Keys) {
+    Write-Host "La propiedad '$propiedad' tiene el valor: $($equipoOrdenado[$propiedad])"
+}
+``` 
+**Convertir hashtable a objeto (PSCustomObject)**
+```powershell
+# El uso más común de una hashtable ordenada en PowerShell es servir de molde para crear
+# un objeto real. Esto te permite exportarlo a un CSV, mostrarlo en una tabla perfecta o
+# pasarlo por tuberías (|):
+
+# Convertir a objeto real
+$objetoEquipo = [PSCustomObject]$equipoOrdenado
+
+# Ahora puedes enviarlo a un archivo CSV directamente
+$objetoEquipo | Export-Csv -Path "C:\datos\equipo.csv" -NoTypeInformation
+
+```
+
+
+
+
+
+**Ejemplo integrador: un array de hashtables**
+```powershell
+$inventario = @(
+    @{ Nombre = 'PC-Aula01'; Estado = 'Activo' },
+    @{ Nombre = 'PC-Aula02'; Estado = 'Baja' },
+    @{ Nombre = 'PC-Aula03'; Estado = 'Activo' }
+)
+
+foreach ($equipo in $inventario) {
+    if ($equipo.Estado -eq 'Activo') {
+        Write-Host "$($equipo.Nombre) está operativo"
+    }
+}
 ```
 
 
@@ -171,53 +319,6 @@ Write-Host $fecha.GetType().Name
 Write-host $fecha
 ```
 
-
-**Cómo obtener el tipo de una variable**
-
-```powershell
-$nombre = Read-Host "¿Cuál es tu nombre?"
-Write-Host "El tipo de la variables $nombre es: $nombre.GetType.Name"
-```
-
-**Definición explícita de variables**
-
-```powershell
-$nombre = "Javier"
-Write-Host $nombre.GetType().Name
-# A la variable $nombre se le asigna el tipo string.
-
-$precio = 5.99
-Write-Host $precio.GetType().Name
-# A la variable $precio se le asigna el tipo double.
-
-$precio = "tomate"
-Write-Host $precio.GetType().Name
-# Ahora $precio es de tipo string.
-# Como a la variable $precio no le hemos especificado de que tipo será, se adapta al valor
-# asignado, es dinámica y por tanto puede cambiar de tipo.
-```
-
-**Ejemplos de definiciones explícitas de variables**
-
-```powershell
-$temperatura = 37.50
-# En modo implícito $temperatura será una variable double(64 bits)
-
-[float] $temperatura = 37.50
-# En modo explícito será una variable float (32 bits). Más apropiada por su tamaño.
-```
-
-
-
-
-**Ejemplo de cambio del valor de una constante**
-
-```powershell
-New-Variable -Name $nombre -Value "Luisa" -Option ReadOnly
-$nombre = "Pepe"
-
-#Esto producirá un error.
-```
 
 **Ejemplo combinado de operadores aritméticos**
 

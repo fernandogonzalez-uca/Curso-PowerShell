@@ -1,4 +1,8 @@
-﻿# Obtención del valor asociado a propiedades y métodos de un objeto
+# Código fuente Bloque V - Objetos, variables y pipelines *
+
+**Objetos - Propiedades y métodos**
+```powershell
+# Obtención del valor asociado a propiedades y métodos de un objeto
 # almacenado en una variable
 Get-Process | Get-Member
 
@@ -19,18 +23,20 @@ $proceso.Kill()        # Ejecuta un método: cierra el proceso
 (Get-Process -Name notepad).kill() 
 
 (Get-Process -Id 28936).Kill()
+``` 
 
 
-# Declaración de variables en modo asignación directa
-
+**Declaración de variables en modo asignación directa**
+```powershell
 $nombre = "Fernando"
 ${apellido1 apellido2} = "González Macías"
 Write-Host "Mi nombre es: $nombre"
 Write-Host "Mis apellidos son: ${apellido1 apellido2}"
 Write-Host "Mi nombre completo es: $nombre ${apellido1 apellido2}"
+```
 
-
-
+**Variables - Declaración mediante cmdlet**
+```powershell
 # Variables - Declaración mediante cmdlet
 New-Variable $nombre
 New-Variable -Name $nombre
@@ -38,9 +44,10 @@ New-Variable -Name $nombre -Value "Isabel"
 
 New-Variable -Name 'MaxIntentos' -Value 5 -Option ReadOnly
 New-Variable -Name 'Departamento' -Value 'Sistemas' -Option Constant -Description 'No debe modificarse'
+```
 
-
-# Variables - Obtención de su tipo
+**Variables - Obtención de su tipo**
+```powershell
 $numero = 10
 $numero.GetType().Name
 
@@ -52,10 +59,11 @@ $fecha.GetType().Name
 
 $procesos = Get-Process
 $procesos.GetType().Name
+```
 
 
-
-# Ejemplo de asignación de constante mediante Set-Varible
+**Ejemplo de asignación de constante mediante Set-Varible**
+```powershell
 
 #Constante (Constant): Un valor fijo e inalterable.
 #No se puede modificar ni eliminar durante toda la sesión.
@@ -74,46 +82,60 @@ Remove-Variable -Name RUTA_BASE -Force
 # del cmdlet Remove-Item
 Remove-Item -Path Variable:\RUTA_BASE -Force
 
+```
 
-# Ejemplo de asignación de constante mediante atributo ReadOnly() en la declaración
+
+**Ejemplo de asignación de constante mediante atributo ReadOnly() en la declaración**
+```powershell
 [ReadOnly()]$MI_PUERTO = 8080
+```
 
 
-#Asignación de valores a una variable en tiempo de ejecución
+**Asignación de valores a una variable en tiempo de ejecución**
+```powershell
 $nombre = Read-Host "¿Cual es tu nombre?"
 Write-Host "Hola $nombre"
+```
 
-
-# Ejemplos de uso de pipeline
+**Ejemplos de uso de pipeline**
+```powershell
 # Obtén los cinco procesos que más CPU consumen por orden de consumo y mostrando sólo
 # su nombre y la CPU usada.
 Get-Process | Sort-Object CPU -Descending | Select-Object -First 5 Name, CPU
+```
 
-# Ejemplos de uso de pipeline aplicados al ámbito de Sistemas
+**Ejemplos de uso de pipeline aplicados al ámbito de Sistemas**
+```powershell
 # Servicios que deberían estar iniciados y no lo están
 Get-Service |
     Where-Object { $_.Status -eq 'Stopped' } |
     Select-Object Name, DisplayName
+```
 
 
-# Los 5 archivos más pesados de una carpeta
+**Los 5 archivos más pesados de una carpeta**
+```powershell
 Get-ChildItem -Path 'C:\Users\Public' -Recurse |
     Sort-Object Length -Descending |
     Select-Object -First 5 Name, Length
+```
 
-# Guardar un resultado en una variable para reutilizarlo
+**Guardar un resultado en una variable para reutilizarlo**
+```powershell
 $topProcesos = Get-Process | Sort-Object CPU -Descending |
     Select-Object -First 5
 $topProcesos | Format-Table Name, CPU -AutoSize
+```
 
 
-# Ejercicios slide V-16
-
+**Ejercicios slide V-16**
+```powershell
 # 1.	Ejecutar Get-Process | Get-Member y localizar la propiedad WorkingSet (memoria)
 # y el método Kill().
 Get-Process | Get-Member
 
-# 2.	Comprobar la versión de PowerShell en uso consultando la variable
+
+#2. Comprobar la versión de PowerShell en uso consultando la variable
 # automática $PSVersionTable.
 $PSVersionTable
 
@@ -137,3 +159,7 @@ $topMemoria | Where-Object Name -like '*e*'
 # usando Measure-Object.
 
 Get-Service | Where-Object { $_.Status -eq 'Running' } | Measure-Object
+```
+
+
+

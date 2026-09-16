@@ -1,4 +1,4 @@
-# Código fuente Bloque I3 - 1: Scripts y entornos de seguridad
+# Código fuente Bloque III - Scripts y entornos de seguridad
 
 **Comandos esenciales**
 
@@ -7,6 +7,11 @@
 ```powershell
 # Ver la política efectiva la que realmente se aplica.
 Get-ExecutionPolicy
+
+# Si devuelve Restricted, la ejecución de scripts estará bloqueada por defecto hasta que # se modifique la directiva -por ejemplo, ajustando el ámbito CurrentUser a
+# RemoteSigned-.
+
+
 
 # Ver la política en TODOS los ámbitos, con su orden de precedencia.
 Get-ExecutionPolicy -List
@@ -31,8 +36,10 @@ Unblock-File -Path .\script.ps1
 **Mi primer script en ISE**
 
 ```powershell
-# Mi primer script en PowerShell
-Write-Host "Hola ATI de la UCA!!"
+# Mi primer en script en ISE.
+
+Write-Host "Hola mundo!!"
+Write-Host "Bienvenidos al curso de PowerShell!!"
 ```
 
 **Segundo script: variables e interacción con el usuario**
@@ -48,7 +55,7 @@ $nombre = Read-Host "¿Cómo te llamas?"
 Write-Host "Bienvenido/a al curso de PowerShell, $nombre"
 ```
 
-** Tercer script: Variables de entorno y aplicación a Sistemas**
+**Tercer script: Variables de entorno y aplicación a Sistemas**
 ```powershell
 # Información básica del equipo
 $equipo = $env:COMPUTERNAME

@@ -1,4 +1,4 @@
-# Código fuente Bloque IX - 1: Manejo de archivos y carpetas #
+# Código fuente Bloque IX - Manejo de archivos y carpetas #
 
 *Ejemplo de Get-ChildItem**
 ```powershell
