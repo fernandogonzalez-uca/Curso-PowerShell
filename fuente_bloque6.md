@@ -4,7 +4,7 @@
 
 ```powershell
 $nombre = Read-Host "¿Cuál es tu nombre?"
-Write-Host "El tipo de la variables $nombre es: $nombre.GetType.Name"
+Write-Host "El tipo de la variable $nombre es: $($nombre.GetType().Name)"
 ```
 
 **Definición implícita de variables**
@@ -29,6 +29,7 @@ Write-Host $precio.GetType().Name
 
 ```powershell
 $temperatura = 37.50
+$temperatura.GetType().Name
 # En modo implícito $temperatura será una variable double(64 bits)
 
 [float] $temperatura = 37.50
@@ -38,8 +39,9 @@ $temperatura = 37.50
 **Ejemplo de cambio del valor de una constante**
 
 ```powershell
-New-Variable -Name $nombre -Value "Luisa" -Option ReadOnly
-$nombre = "Pepe"
+New-Variable -Name PI -Value 3.1416 -Option ReadOnly
+$PI
+$PI = 3.14
 
 #Esto producirá un error.
 ```
@@ -67,6 +69,7 @@ Departamento de Sistemas - UCA
 "Sistemas".Contains('Sis')
 
 $mi_array = "a,b,c".Split(',')
+$mi_array
 $mi_array.GetType().Name
 
 $temp = "Hola"
@@ -75,6 +78,7 @@ $temp.GetType().Name
 "Cádiz".Length
 
 $mi_cadena = @('a','b','c') -join '-' 
+$mi_cadena
 $mi_cadena.GetType().Name
 ```
 
