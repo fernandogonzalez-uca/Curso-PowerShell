@@ -42,12 +42,51 @@ $temperatura.GetType().Name
 New-Variable -Name PI -Value 3.1416 -Option ReadOnly
 $PI
 $PI = 3.14
+$PI = "Hola"
+$PI
 
-#Esto producirá un error.
+<#
+Una variable declarada con la opción ReadOnly está protegida contra modificaciones
+accidentales a través de los cmdlets estándar (como Set-Variable), pero no bloquea la 
+reasignación mediante el operador de asignación directa (=).
+
+No muestra error, pero realmente no asigna.
+
+Para que PowerShell impida totalmente cambiar el valor de una variable incluso utilizando el
+operador =, debes usar la opción Constant en lugar de ReadOnly.
+#>
+```
+**Ejemplo de uso de Constant**
+```powershell
+New-Variable -Name PI -Value 3.1416 -Option Constant
+
+# Al intentar cambiar su valor:
+$PI = 3.14
+# Error: No se puede sobreescribir la variable PI porque es de solo lectura o constante.
+```
+
+**Ejemplo de secuencias de escape**
+```powershell
+Write-Host "Línea 1`nLínea 2`a"
+# Resultado:
+# Línea 1
+# Línea 2
+<#
+No sale pitido. Las versiones modernas de PowerShell y la aplicación Windows Terminal suelen ignorar la señal sonora del carácter 0x07 (el código ASCII detrás de `a)
+#>
+
+# Alternativa
+# Emite un pitido a 800 Hz durante 500 milisegundos
+[System.Console]::Beep(800, 500)
+
+# Sonidos nativos de Windows
+[System.Media.SystemSounds]::Asterisk.Play()
+[System.Media.SystemSounds]::Exclamation.Play()
+
 ```
 
 
-**Ejemplo de strings multilíneas -here-strings-
+**Ejemplos de strings multilíneas -here-strings-**
 ```powershell
 $mensaje = @"
 Estimado usuario,
@@ -55,6 +94,23 @@ Su equipo se reiniciará esta noche por mantenimiento.
 Departamento de Sistemas - UCA
 "@
 ```
+
+```powershell
+$menu = @"
+========================================
+       PANEL DE ADMINISTRACIÓN          
+========================================
+[1] Verificar conectividad de red
+[2] Reiniciar servicios de impresión
+[3] Consultar espacio en disco
+[Q] Salir
+========================================
+"@
+
+Clear-Host
+Write-Host $menu -ForegroundColor Cyan
+```
+
 
 **Ejemplos de métodos y operadores más usados con strings**
 
@@ -77,9 +133,11 @@ $temp.GetType().Name
 
 "Cádiz".Length
 
+# Sintaxis infija
 $mi_cadena = @('a','b','c') -join '-' 
 $mi_cadena
 $mi_cadena.GetType().Name
+
 ```
 
 
@@ -121,6 +179,7 @@ $hoy.ToString("dd/MM/yyyy")   # Formateada como texto
 $inicio = Get-Date "01/01/2026"
 $fin    = Get-Date
 ($fin - $inicio).Days     # Número de días transcurridos
+($fin - $inicio).GetType().Name 
 ```
 
 **Arrays**
@@ -247,7 +306,11 @@ $equipoOrdenado.Remove('Estado')
 if ($equipoOrdenado.Contains('MacAddress')) { "Ya tiene MAC" }
 
 # Comprobar si la IP '10.10.5.20' está asignada a alguna de las propiedades
-if ($equipoOrdenado.ContainsValue('10.10.5.20')) { "Esa IP está registrada" }
+# Opción 1 (Recomendada) - Usar el método Contains con el operador Values.
+if ($equipoOrdenado.Values.Contains('10.10.5.25')) { "Esa IP está registrada" }
+
+# Opción 2 - Usar el operador de comparación -contains
+if ($equipoOrdenado.Values -contains('10.10.5.25')) { "Esa IP está registrada" }
 ```
 
 **Recorrer la hashtable**
@@ -291,9 +354,10 @@ foreach ($equipo in $inventario) {
 }
 ```
 
-
-
-
+**Operadores de comparación. Error clásico con la asignación**
+```powershell
+if ($valor = 5) {"En esta opción siempre se entra"}
+```
 
 
 **Conversión de tipos (Casting)**
@@ -327,11 +391,11 @@ Write-host $fecha
 **Ejemplo combinado de operadores aritméticos**
 
 ```powershell
-$equiposTotales = 23
+$equiposTotales = 22
 $capacidadAula  = 5
 
-$aulasCompletas = [int]($equiposTotales / $capacidadAula)   # 4 aulas completas
-$equiposSueltos = $equiposTotales % $capacidadAula          # 3 equipos sobran
+$aulasCompletas = [int]($equiposTotales / $capacidadAula)   # 4 aulas completas. Existe redondeo.
+$equiposSueltos = $equiposTotales % $capacidadAula          # 2 equipos sobran
 
 Write-Host "Se necesitan $aulasCompletas aulas completas y sobran $equiposSueltos equipos"
 ```
@@ -344,12 +408,10 @@ Write-Host "Se necesitan $aulasCompletas aulas completas y sobran $equiposSuelto
 $arranque = (Get-CimInstance Win32_OperatingSystem).LastBootUpTime
 $diasEncendido = (Get-Date) - $arranque
 if ($diasEncendido.Days -gt 15) {
-    Write-Host "Aviso: el equipo lleva $($diasEncendido.Days) días sin reiniciarse" 
+    Write-Host "Aviso: el equipo lleva $($diasEncendido.Days) dias sin reiniciarse" 
 } else {
-    Write-Host "Aviso: el qequipo lleva sólo $(diasEncendido.Days) días encendidos"
+    Write-Host "Aviso: el qequipo lleva sólo $($diasEncendido.Days) dias encendidos"
 }
-
-
 ```
 
 ***Comprobar el espacio libre en disco con un umbral***
