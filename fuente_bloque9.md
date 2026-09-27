@@ -3,38 +3,56 @@
 *Ejemplo de Get-ChildItem**
 ```powershell
 Get-ChildItem -Path 'C:\Temp' | Get-Member -MemberType Property
-# TypeName: System.IO.FileInfo  ->  también es, simplemente, un objeto más
+
+# TypeName: System.IO.DirectoryInfo -> también es, simplemente un objeto más.
+# TypeName: System.IO.FileInfo
 ```
 
 **Rutas en PowerShell**
 ```powershell
-$rutaDatos = Join-Path -Path $PSScriptRoot -ChildPath 'datos\informe.csv'
+$rutaDatos = Join-Path -Path $PSScriptRoot -ChildPath 'Temp\informe.csv'
 Split-Path -Path $rutaDatos -Parent      # La carpeta contenedora
 Split-Path -Path $rutaDatos -Leaf        # Solo el nombre del archivo
+
+# Obtenemos error porque estamos referenciando la variable $PSScriptRoot pero ejecutándola
+# directamente en consola, no como un script.
 ```
 
 **Comprobar si algo existe:Test-Path**
 ```powershell
-Test-Path 'C:\Datos\informe.csv'                    # $true o $false
-Test-Path 'C:\Datos' -PathType Container             # ¿Es una carpeta?
-Test-Path 'C:\Datos\informe.csv' -PathType Leaf      # ¿Es un archivo?
+Test-Path 'C:\Datos\Fuentes\Temp\informe.csv'                    # $true o $false
+Test-Path 'C:\Datos\Fuentes\Temp' -PathType Container             # ¿Es una carpeta?
+Test-Path 'C:\Datos\Fuentes\Temp\informe.csv' -PathType Leaf      # ¿Es un archivo?
 ```
 
 **CMDLETs fundamentales**
 ```powershell
-Test-Path 'C:\Datos\informe.csv'
-Get-Item 'C:\Datos\informe.csv'
+# Test-Path verifica si existe la carpeta o fichero.
+Test-Path 'C:\Datos\Fuentes\Temp\informe.csv'
+
+# Get-Item obtiene información sobre un elemento concreto (directorio, fichero o registro)
+# pero no obtiene el contenido del mismo.
+Get-Item 'C:\Datos\Fuentes\Temp\informe.csv'
+
+# Get-ChildItem lista las subcarpetas y ficheros recursivamente a partir del directorio dado.
 Get-ChildItem 'C:\Datos' -Recurse
-New-Item -Path 'C:\Datos' -ItemType Directory
+
+# New-Item crea una carpeta con el nombre asignado.
+New-Item -Path 'C:\Datos\Fuentes\Temp2' -ItemType Directory
+
+# Copy-Item crea una copia del fichero origen.txt a destino.txt
 Copy-Item 'origen.txt' 'destino.txt'
-Move-Item 'informe.csv' 'C:\Archivo\'
+
+# Move-Item Mueve el fichero informe.csv a la carpeta C:\Datos
+Move-Item 'informe.csv' 'C:\Datos\'
+
+# Rename-Item renombra el fichero viejo.txt a nuevo.txt
 Rename-Item 'viejo.txt' 'nuevo.txt'
+
+# Remove-Item elimina el fichero temporal.txt
 Remove-Item 'temporal.txt'
 ```
 
-```powershell
-# Crear carpeta para hacer que estos cmdlets funcionen
-```
 
 **Crear carpetas y archivos**
 ```powershell
@@ -66,6 +84,9 @@ if (-not (Test-Path -Path $rutaBase)) {
 # Crear el archivo solo si no existe
 if (-not (Test-Path -Path $archivoRegistro)) {
     New-Item -Path $archivoRegistro -ItemType File
+    Write-Host "Fichero $archivoRegistro creado con éxito." -ForegroundColor Green
+} else {
+    Write-Host "Fichero $archivoRegistro ya existía" -ForegroundColor Yellow
 }
 ```
 
@@ -78,7 +99,7 @@ Fecha de creación: $(Get-Date)
 ======================================
 "@
 
-New-Item -Path 'C:\Datos\Aulas\registro.txt' -ItemType File -Value $contenidoInicial Force
+New-Item -Path 'C:\Datos\Aulas\registro.txt' -ItemType File -Value $contenidoInicial -Force
 ```
 
 **Listar contenido con Get-ChildItem**
@@ -101,35 +122,36 @@ Get-ChildItem -Path 'C:\Datos' -Directory
 
 **Copiar, mover, renombrar y eliminar**
 ```powershell
-Copy-Item -Path 'C:\Datos\informe.csv' -Destination 'C:\Backup\'
-Copy-Item -Path 'C:\Datos' -Destination 'C:\Backup\Datos' -Recurse
+New-Item -Path 'C:\Backup' -ItemType Directory
+Copy-Item -Path 'C:\Datos\Aulas\registro.txt' -Destination 'C:\Backup\'
+Copy-Item -Path 'C:\Datos' -Destination 'C:\Backup\' -Recurse
 
-Move-Item -Path 'C:\Datos\informe.csv' -Destination 'C:\Archivo\'
-Rename-Item -Path 'C:\Datos\viejo.txt' -NewName 'nuevo.txt'
+Move-Item -Path 'C:\Datos\Aulas\registro.txt' -Destination 'C:\Backup\registro2.txt'
+Rename-Item -Path 'C:\Datos\Fuentes\viejo.txt' -NewName 'viejo_OLD.txt'
 
-Remove-Item -Path 'C:\Temp\cache.tmp'
-Remove-Item -Path 'C:\Temp\CarpetaVieja' -Recurse -Force
+Remove-Item -Path 'C:\Backup\registro2.txt'
+Remove-Item -Path 'C:\Backup\Datos\Aulas\' -Recurse -Force
 
-Remove-Item 'C:\Temp\*' -Recurse -WhatIf
+Remove-Item 'C:\Backup\Datos\*' -Recurse -WhatIf
 ```
 
 **Leer contenido de un archivo**
 ```powershell
-Get-Content -Path 'C:\Datos\registro.txt'
+Get-Content -Path 'C:\Datos\Fuentes\Temp\registro.txt'
 # Devuelve un array: una línea por elemento
 
-Get-Content -Path 'C:\Datos\registro.txt' -Raw
+Get-Content -Path 'C:\Datos\Fuentes\Temp\registro.txt' -Raw
 # Todo el archivo como una única cadena de texto
 
-Get-Content -Path 'C:\Datos\registro.txt' -TotalCount 10
+Get-Content -Path 'C:\Datos\Fuentes\Temp\registro.txt' -TotalCount 10
 # Solo las 10 primeras líneas
 
-Get-Content -Path 'C:\Datos\registro.txt' -Tail 10
-# Solo las 10 últimas líneas
+Get-Content -Path 'C:\Datos\Fuentes\Temp\registro.txt' -Tail 5
+# Solo las 5 últimas líneas
 ```
 
 ```powershell
-$lineas = Get-Content -Path 'C:\Datos\registro.txt'
+$lineas = Get-Content -Path 'C:\Datos\Fuentes\Temp\registro.txt'
 foreach ($linea in $lineas) {
     if ($linea -match 'ERROR') {
         Write-Host $linea
@@ -175,29 +197,50 @@ Get-Process | Out-File -FilePath "C:\datos\procesos_anchos.txt" -Width 300
 
 **Controlar errores si el archivo está bloqueado**
 ```powershell
-#Opción A: Ignorar el error de forma silenciosa
+# Opción A: Ignorar el error de forma silenciosa
 "Texto de prueba" | Out-File -FilePath "C:\datos\archivo_bloqueado.txt" -ErrorAction SilentlyContinue
+
+# Abrimos el fichero con notepad.exe y volvemos a ejecutar la línea de script, cambiando el contenido a enviar.
+# Vemos que actualiza el fichero aunque esté abierto con Notepad.exe.
 ```
 
 ```powershell
+# Bloqueamos el fichero inicialmente
+$ruta = "C:\datos\archivo_bloqueado.txt"
+
+$stream = [System.IO.File]::Open(
+    $ruta,
+    [System.IO.FileMode]::OpenOrCreate,
+    [System.IO.FileAccess]::Read,
+    [System.IO.FileShare]::Read
+)
+
+Write-Host "Archivo bloqueado para escritura."
+
 #Opción B: Capturar el error para tomar medidas
 try {
-    "Log importante" | Out-File -FilePath "C:\datos\archivo.txt" -ErrorAction Stop
+    "Log importante" | Out-File -FilePath "C:\datos\archivo_bloqueado.txt" -ErrorAction Stop
     Write-Host "Archivo guardado con éxito." -ForegroundColor Green
 } catch {
     Write-Host "Error: No se pudo escribir en el archivo. Puede que esté bloqueado." -ForegroundColor Red
     # Aquí podrías enviar una alerta o escribir en un archivo alternativo
 }
+
+
+Write-Host "Pulsa ENTER para liberar el archivo..."
+Read-Host
+
+$stream.Close()
 ```
 
 **Trabajar con archivos .csv**
 ```powershell
-$equipos = Import-Csv -Path 'C:\Datos\equipos.csv'
+$equipos = Import-Csv -Path 'C:\Datos\Fuentes\Temp\ordenadores_aula.csv' -Delimiter ';'
 
 foreach ($equipo in $equipos) {
-    Write-Host "$($equipo.Nombre) está en el aula $($equipo.Aula)"
+    Write-Host "$($equipo.Equipo) tiene de IP $($equipo.IP)"
 }
-$inventario = Get-ChildItem -Path 'C:\Software' -File |
+$inventario = Get-ChildItem -Path 'C:\Datos\Fuentes\Temp' -File |
     Select-Object Name, Length, LastWriteTime
 
 $inventario | Export-Csv -Path 'C:\Datos\inventario.csv' -NoTypeInformation -Encoding UTF8
@@ -219,8 +262,13 @@ $configuracion.NumeroEquipos
 
 **Ejemplo integrador**
 ```powershell
+# Con fsutil puede ser necesario permisos de administrador
+# Crea un archivo de ~10 MB (10,485,760 bytes) de forma instantánea
+fsutil file createNew "C:\Datos\MiArchivo.dat" 10485760
+
+
 $carpeta = 'C:\Datos'
-$umbral  = 10MB
+$umbral  = 5MB
 
 $archivosGrandes = Get-ChildItem -Path $carpeta -Recurse -File |
     Where-Object { $_.Length -gt $umbral } |
@@ -230,6 +278,6 @@ $archivosGrandes = Get-ChildItem -Path $carpeta -Recurse -File |
 $archivosGrandes |
     Export-Csv -Path 'C:\Datos\archivos_grandes.csv' -NoTypeInformation -Encoding UTF8
 
-Write-Host "Se han encontrado $($archivosGrandes.Count) archivos de más de 10 MB"
+Write-Host "Se han encontrado $($archivosGrandes.Count) archivos de más de 5 MB"
 ```
 

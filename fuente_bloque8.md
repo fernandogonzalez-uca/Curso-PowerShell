@@ -95,34 +95,64 @@ $equipos | ForEach-Object -Parallel {
 } -ThrottleLimit 4
 ```
 
+**¿Qué significa entorno aislado con -parallel?**
+```powershell
+# En este ejemplo no hay ningún problema. Cada iteración del bucle accede a la variable externa al bucle.
+$mensaje = "Hola desde fuera"
+1..3 | ForEach-Object {
+    Write-Host $mensaje
+}
+
+# Cada ejecución de ForEach-Object --Parallel se ejecuta en un runspace separado.
+# Esos entornos no comparten automáticamente las variables del ámbito exterior.
+$mensaje = "Hola desde fuera"
+1..3 | ForEach-Object -Parallel {
+    Write-Host $using:mensaje
+}
+```
+
+
 **Buen uso de los bucles: una trampa de rendimiento**
 
 ```powershell
 # Poco eficiente: += crea un array COMPLETO nuevo en cada vuelta
-$resultados = @()
-foreach ($equipo in $listaGrandeDeEquipos) {
-    $resultados += Test-Connection -ComputerName $equipo -Count 1 -Quiet
-}
+$listaGrandeDeEquipos = @(
+    "localhost"
+    "127.0.0.1"
+    "www.google.es"
+    "www.tusitio.com"
+   
+)
 ```
 
 ```powershell
 # Preferible: se asigna directamente el resultado del bucle completo
+$listaGrandeDeEquipos = @(
+    "localhost"
+    "127.0.0.1"
+    "www.tusitio.com"
+    "www.google.es"
+)
+
+$resultados = @()
 $resultados = foreach ($equipo in $listaGrandeDeEquipos) {
     Test-Connection -ComputerName $equipo -Count 1 -Quiet
 }
+
+$resultados
 ```
 
 **Ejemplo integrador aplicado a Sistemas**
 
 ```powershell
-$maxIntentos = 10
+$maxIntentos = 5
 $intentos    = 0
 $listo       = $false
 
 while (-not $listo -and $intentos -lt $maxIntentos) {
     $intentos++
     $listo = Test-Connection -ComputerName 'SRV-DATOS' -Count 1 -Quiet
-    if (-not $listo) { Start-Sleep -Seconds 5 }
+    if (-not $listo) { Start-Sleep -Seconds 2 }
 }
 
 if ($listo) {
@@ -130,6 +160,8 @@ if ($listo) {
 } else {
     Write-Host "El servidor no respondió tras $maxIntentos intentos"
 }
+
+# Tarda unos segundos para obtener la salida.
 ```
 
 
