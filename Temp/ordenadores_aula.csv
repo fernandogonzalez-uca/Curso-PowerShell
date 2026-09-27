@@ -1,0 +1,31 @@
+﻿Equipo;IP;MAC;Fabricante;Modelo;CPU;RAM_GB;Disco_GB;SistemaOperativo;Version;Estado;Aula
+AULA-PC-01;10.161.10.101;00-1A-2B-3C-4D-01;HP;ProDesk 600 G6;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-02;10.161.10.102;00-1A-2B-3C-4D-02;Lenovo;ThinkCentre M75q;AMD Ryzen 5 PRO 4650GE;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-03;10.161.10.103;00-1A-2B-3C-4D-03;Dell;OptiPlex 7090;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-04;10.161.10.104;00-1A-2B-3C-4D-04;HP;ProDesk 600 G6;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-05;10.161.10.105;00-1A-2B-3C-4D-05;Lenovo;ThinkCentre M75q;AMD Ryzen 5 PRO 4650GE;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-06;10.161.10.106;00-1A-2B-3C-4D-06;Dell;OptiPlex 7090;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-07;10.161.10.107;00-1A-2B-3C-4D-07;HP;ProDesk 600 G6;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Incidencia;Aula Informática 1
+AULA-PC-08;10.161.10.108;00-1A-2B-3C-4D-08;Lenovo;ThinkCentre M75q;AMD Ryzen 5 PRO 4650GE;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-09;10.161.10.109;00-1A-2B-3C-4D-09;Dell;OptiPlex 7090;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-10;10.161.10.110;00-1A-2B-3C-4D-0A;HP;ProDesk 600 G6;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-11;10.161.10.111;00-1A-2B-3C-4D-0B;Lenovo;ThinkCentre M75q;AMD Ryzen 5 PRO 4650GE;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-12;10.161.10.112;00-1A-2B-3C-4D-0C;Dell;OptiPlex 7090;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-13;10.161.10.113;00-1A-2B-3C-4D-0D;HP;ProDesk 600 G6;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-14;10.161.10.114;00-1A-2B-3C-4D-0E;Lenovo;ThinkCentre M75q;AMD Ryzen 5 PRO 4650GE;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-15;10.161.10.115;00-1A-2B-3C-4D-0F;Dell;OptiPlex 7090;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-16;10.161.10.116;00-1A-2B-3C-4D-10;HP;ProDesk 600 G6;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-17;10.161.10.117;00-1A-2B-3C-4D-11;Lenovo;ThinkCentre M75q;AMD Ryzen 5 PRO 4650GE;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-18;10.161.10.118;00-1A-2B-3C-4D-12;Dell;OptiPlex 7090;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Incidencia;Aula Informática 1
+AULA-PC-19;10.161.10.119;00-1A-2B-3C-4D-13;HP;ProDesk 600 G6;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-20;10.161.10.120;00-1A-2B-3C-4D-14;Lenovo;ThinkCentre M75q;AMD Ryzen 5 PRO 4650GE;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-21;10.161.10.121;00-1A-2B-3C-4D-15;Dell;OptiPlex 7090;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-22;10.161.10.122;00-1A-2B-3C-4D-16;HP;ProDesk 600 G6;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-23;10.161.10.123;00-1A-2B-3C-4D-17;Lenovo;ThinkCentre M75q;AMD Ryzen 5 PRO 4650GE;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-24;10.161.10.124;00-1A-2B-3C-4D-18;Dell;OptiPlex 7090;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-25;10.161.10.125;00-1A-2B-3C-4D-19;HP;ProDesk 600 G6;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-26;10.161.10.126;00-1A-2B-3C-4D-1A;Lenovo;ThinkCentre M75q;AMD Ryzen 5 PRO 4650GE;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-27;10.161.10.127;00-1A-2B-3C-4D-1B;Dell;OptiPlex 7090;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Incidencia;Aula Informática 1
+AULA-PC-28;10.161.10.128;00-1A-2B-3C-4D-1C;HP;ProDesk 600 G6;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-29;10.161.10.129;00-1A-2B-3C-4D-1D;Lenovo;ThinkCentre M75q;AMD Ryzen 5 PRO 4650GE;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
+AULA-PC-30;10.161.10.130;00-1A-2B-3C-4D-1E;Dell;OptiPlex 7090;Intel Core i5-10500;16;512;Windows 11 Enterprise;25H2;Activo;Aula Informática 1
