@@ -94,6 +94,35 @@ function Test-EsPar {
     }
     return $false
 }
+
+Test-EsPar -Numero 13
+Test-EsPar -Numero 14
+```
+
+```powershell
+function Get-Saludo {
+    Write-Host "Hola Luis"
+}
+
+Get-Saludo
+
+$resultado = Get-Saludo
+
+#Visualizamos el valor de $resultado y no muestra nada
+$resultado
+```
+
+```powershell
+function Get-Saludo2 {
+    Write-Output "Hola Luisa"
+}
+
+Get-Saludo2
+
+$resultado = Get-Saludo2
+
+#Visualizamos el valor de $resultado y no muestra nada
+$resultado
 ```
 
 **4 - Funciones avanzadas: [CmdletBinding()]**
@@ -151,7 +180,7 @@ function Get-Promedio {
     process {
         # 2. Se ejecuta UNA VEZ POR CADA ELEMENTO que entra por el pipeline.
         # Aquí se procesa cada dato individual.
-        suma += Numero
+        $suma += $Numero
         $contador++
     }
 
@@ -159,7 +188,7 @@ function Get-Promedio {
         # 3. Se ejecuta UNA SOLA VEZ al finalizar la entrada de datos.
         # Ideal para consolidados, cálculos finales o cerrar conexiones.
         if ($contador -gt 0) {
-            promedio = suma / $contador
+            $promedio = $suma / $contador
             
             [PSCustomObject]@{
                 TotalElementos = $contador

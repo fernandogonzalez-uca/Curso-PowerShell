@@ -1,0 +1,4 @@
+[2026-09-28 22:35:50] Inicio del proceso (Ejemplo 3 - PS2EXE)
+[2026-09-28 22:35:50] Usuario: Fernando - Equipo: PORATI11
+[2026-09-28 22:35:51] Tarea de ejemplo completada correctamente
+[2026-09-28 22:35:55] Fin del proceso

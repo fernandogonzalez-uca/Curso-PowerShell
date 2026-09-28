@@ -20,7 +20,13 @@ Import-Module -Name 'ImportExcel'
 Get-Module -ListAvailable
 Get-InstalledModule
 Update-Module -Name 'ImportExcel'
+
+# Remove-Module descarga el módulo de memoria
+Remove-Module -Name ImportExcel -Force
+
+# Uninstall-Module borra los archivos del disco
 Uninstall-Module -Name 'ImportExcel'
+
 Install-Script -Name 'nombre-script'
 ```
 
@@ -75,7 +81,7 @@ Install-PSResource -Name 'ImportExcel'   # Equivalente moderno, PowerShell 7.4+
 Install-Module -Name ImportExcel -Scope CurrentUser
 Import-Module ImportExcel
 
-$inventario = Get-ChildItem -Path 'C:\Software' -File |
+$inventario = Get-ChildItem -Path 'C:\Datos' -File |
     Select-Object Name, Length, LastWriteTime
 
 $inventario | Export-Excel -Path 'C:\Datos\inventario.xlsx' `

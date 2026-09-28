@@ -27,39 +27,12 @@ Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" |
         @{Name='LibreGB'; Expression={ [math]::Round($_.FreeSpace / 1GB, 2) }}
 ```
 
-```powershell
-# Los siguienes cmdlets los ejecutamos en cada equippo.
-
-# Habilitar administración remota mediante PowerShell.
-
-Enable-PSRemoting -Force
-# Esto habilita/configura WinRM, crea las reglas de firewall correspondientes y prepara PowerShell Remoting.
-
-Get-Service WinRM
-# Verificamos si el servicio WinRM se está ejecutando
-
-Get-Service Wingmt
-# Idem para el servicio Wingmt
-
-Get-NetFirewallRule -DisplayGroup "Windows Remote Management"
-# Comprobamos el firewall
-
-
-# Ahora desde cada equipo verificamos la conexión con el equipo remoto
-
-# Comprobamos WinRM con:
-Test-WSMan PC-AULA01
-
-Get-CimInstance Win32_OperatingSystem -ComputerName 'PC-Aula01'
-# Obtenemos versión del sistema operativo del eqiupo remoto.
-# Esto funcionará si estamos ejecutando PowerShell con una cuenta que tiene permisos administrativos sobre el equipo remoto.
-```
 
 ```powershell
 # Solicitamos credenciales
 $Cred = Get-Credential
 
-Get-CimInstance Win32_OperatingSystem -ComputerName 'PC-Aula01'
+Get-CimInstance Win32_OperatingSystem -ComputerName 'ADCAS4XX'
 ```
 
 
@@ -95,11 +68,34 @@ Get-CimInstance -ClassName Win32_LogicalDisk `
 
 **5 - Comandos de red**
 ```powershell
-Test-Connection -ComputerName 'PC-Aula01' -Count 2
-Test-NetConnection -ComputerName 'SRV-DATOS' -Port 445
+# Envía 2 solicitudes de eco ICMP (ping) al equipo nasai1.uca.es y muestra el resultado de cada respuesta.
+Test-Connection -ComputerName 'nasai1.uca.es' -Count 2
+
+# Comprueba si desde tu equipo se puede abrir una conexión TCP al puerto 445 (SMB)
+Test-NetConnection -ComputerName 'nasai1.uca.es' -Port 445
+
+# Muestra un resumen de la configuración de red de cada interfaz del equipo.
+# Similar a ipconfig /all
 Get-NetIPConfiguration
+
+# Hace una consulta DNS para el nombre www.uca.es y devuelve los registros que obtiene.
+# Equivalente a nslookup
 Resolve-DnsName 'www.uca.es'
 ```
+
+```powershell
+# Averiguar IP del adaptador físico de LAN
+(Get-NetAdapter -Physical | Where-Object { $_.Status -eq 'Up' -and $_.PhysicalMediaType -eq '802.3' } |
+    Get-NetIPAddress -AddressFamily IPv4).IPAddress
+```
+
+```powershell
+# Averiguar velocidad de enlace de la red física
+Get-NetAdapter -Physical |
+    Where-Object { $_.Status -eq 'Up' -and $_.PhysicalMediaType -eq '802.3' } |
+    Select-Object Name, LinkSpeed
+```
+
 
 **6 - Usuarios y grupos locales**
 ```powershell
@@ -112,14 +108,14 @@ Add-LocalGroupMember -Group 'Administradores' -Member 'alumno'
 
 ```powershell
 $Password = Read-Host "Introduzca la contraseña" -AsSecureString
-New-LocalUser -Name 'alumno' -Password $Password
+New-LocalUser -Name 'alumno2' -Password $Password
 # PowerShell solicitará la contraseña de forma segura y no la mostrará en pantalla..
 ```
 ```powershell
 # Si queremos establecer directamente una contraseña concreta
 
 $Password = ConvertTo-SecureString 'P@ssw0rd123' -AsPlainText -Force
-New-LocalUser -Name 'alumno' -Password $Password
+New-LocalUser -Name 'alumno3' -Password $Password
 ```
 
 
@@ -128,11 +124,21 @@ New-LocalUser -Name 'alumno' -Password $Password
 
 $Password = ConvertTo-SecureString 'P@ssw0rd123' -AsPlainText -Force
 New-LocalUser `
-    -Name 'alumno' `
+    -Name 'alumno4' `
     -Password $Password `
     -FullName 'Usuario Alumno' `
     -Description 'Cuenta de usuario del aula'
 ```
+
+```powershell
+# Eliminamos las cuatro cuentas de usuarios creadas
+Remove-LocalUser -Name 'alumno' -WhatIf
+Remove-LocalUser -Name 'alumno' -Confirm
+Remove-LocalUser -Name 'alumno2'
+Remove-LocalUser -Name 'alumno3'
+Remove-LocalUser -Name 'alumno4'
+``` 
+
 
 **7 - Active Directory**
 ```powershell

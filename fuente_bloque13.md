@@ -7,47 +7,52 @@ Install-Module -Name ps2exe -Scope CurrentUser
 
 **2 - Conversión básica**
 ```powershell
-Invoke-ps2exe -inputFile '.\MiScript.ps1' -outputFile '.\MiScript.exe'
+Invoke-ps2exe -inputFile '.\PS2EXE_Ejemplos\01-HolaMundo\HolaMundo.ps1' -outputFile '.\PS2EXE_Ejemplos\01-HolaMundo\HolaMundo.exe'
 ```
 
 ```powershell
-Invoke-ps2exe `
-    -inputFile '.\InformeEquipos.ps1' `
-    -outputFile '.\InformeEquipos.exe' `
-    -iconFile '.\icono.ico' `
-    -title 'Informe de Equipos - UCA' `
-    -description 'Genera un informe de archivos grandes en una carpeta' `
-    -company 'Universidad de Cádiz' `
-    -version '1.0.0.0'
+Invoke-ps2exe -inputFile ".\PS2EXE_Ejemplos\02-Parametros\ScriptConParametros.ps1" `
+              -outputFile ".\PS2EXE_Ejemplos\02-Parametros\Saludador.exe"
 ```
 
-**3 - Ejecutables con interfaz gráfica (-noConsole)**
 ```powershell
-Add-Type -AssemblyName System.Windows.Forms
+# Llamada al ejecutable
+.\PS2EXE_Ejemplos\02-Parametros\Saludador.exe -Nombre "Fernando" -Veces 3
+``` 
 
-$formulario = New-Object System.Windows.Forms.Form
-$formulario.Text = 'Preparación de equipo - UCA'
-# ... controles del formulario (botones, etiquetas, campos de texto) ...
-[void]$formulario.ShowDialog()
-Invoke-ps2exe -inputFile '.\AsistentePreparacionEquipo.ps1' `
-    -outputFile '.\AsistenteEquipo.exe' -noConsole
+
+**3 - Ejecutables con (-noConsole)**
+```powershell
+Invoke-ps2exe -inputFile ".\PS2EXE_Ejemplos\03-Icono\ScriptConIcono.ps1" `
+              -outputFile ".\PS2EXE_Ejemplos\03-Icono\HerramientaSilenciosa.exe" `
+              -iconFile ".\PS2EXE_Ejemplos\03-Icono\icono_azul.ico" `
+              -noConsole
 ```
 
 
-**4 - Ejecutables que requieran permisos de administrador**
+**4 - Aplicación gráfica (Windows Forms)**
 ```powershell
-Invoke-ps2exe -inputFile '.\LimpiarTemp.ps1' -outputFile '.\LimpiarTemp.exe' -requireAdmin
+Invoke-ps2exe -inputFile ".\PS2EXE_Ejemplos\04-GUI-WindowsForms\ScriptGUI.ps1" `
+              -outputFile ".\PS2EXE_Ejemplos\04-GUI-WindowsForms\UtilidadEquipos.exe" `
+              -iconFile ".\PS2EXE_Ejemplos\04-GUI-WindowsForms\icono_gui.ico" `
+              -noConsole `
+              -STA `
+              -title "Utilidad de Equipos" `
+              -product "Utilidad de Equipos - Curso PowerShell"
 ```
 
-**5 - Pasar parámetros al ejecutable ya generado**
+**5 - Metadatos completos, versión y elevación de privilegios**
 ```powershell
-# Contenido de LimpiarTemp.ps1 antes de convertirlo:
-param(
-    [string]$Carpeta = 'C:\Temp'
-)
-Remove-Item -Path "$Carpeta\*" -Recurse -Force
-# Una vez convertido, se invoca igual que cualquier otro programa de línea de comandos:
-.\LimpiarTemp.exe -Carpeta 'D:\Temporal'
+Invoke-ps2exe -inputFile ".\PS2EXE_Ejemplos\05-Metadatos-Completo\ScriptCompleto.ps1" `
+              -outputFile ".\PS2EXE_Ejemplos\05-Metadatos-Completo\GestorSistema.exe" `
+              -iconFile ".\PS2EXE_Ejemplos\05-Metadatos-Completo\icono_app.ico" `
+              -requireAdmin `
+              -title "Gestor del Sistema" `
+              -description "Herramienta de mantenimiento para equipos del aula" `
+              -company "Universidad - Curso de PowerShell" `
+              -product "Gestor del Sistema" `
+              -version "1.0.0.0" `
+              -copyright "Material docente - Curso de PowerShell"
 ```
 
 **6 - Firma digital: reducir los avisos de seguridad**
